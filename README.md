@@ -12,4 +12,7 @@ Python Course For **AI23**, ITHS
 
 ```python
 
+Print("Hej")
+print("Hej")
+
 ```
