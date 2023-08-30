@@ -8,3 +8,8 @@ Python Course For **AI23**, ITHS
 - Python
 - AI
   
+---
+
+```python
+
+```
