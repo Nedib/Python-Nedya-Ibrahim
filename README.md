@@ -3,8 +3,8 @@
 
 # Python-Nedya-Ibrahim
 
-### *I will be pushing up all my projects and exercises that I will learn during the Python course.* 
----
+ *I will be pushing up all my projects and exercises that I will learn during the Python course.* 
+
 
  Python Course For **AI23**, ITHS
  --
