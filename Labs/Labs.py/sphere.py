@@ -4,6 +4,10 @@ import numpy as np  # Import the numerical library
 from circle import Circle  # Import the circle class
 from random_points import random_point  # Import the random point function
 
+"""The code defines a Sphere class that inherits from Circle, enabling 3D spherical geometry operations.
+ It calculates properties, validates positions, and visualizes spheres in a 3D plot.
+   Test cases demonstrate its functionalities."""
+
 class Sphere(Circle):
     def __init__(self, radius, x, y, z):
         super().__init__(radius, x, y)  # Use the circle's constructor
@@ -66,3 +70,7 @@ sphere_1.move_3d_geometry(5, 5, 5)  # Move the sphere's position
 print(sphere_1)  # Print the new position
 print(f"Point Inside Sphere (after move): {sphere_1.check_position(point_x, point_y, point_z)}")  # Check if a point is inside
 sphere_1.draw_3d_geometry()  # Draw 3D geometry
+
+
+
+
