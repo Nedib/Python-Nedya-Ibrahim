@@ -4,7 +4,12 @@ import numpy as np
 from rectangle_labb3 import Rectangle
 from random_points import random_point
 
-class Cube(Rectangle):
+"""The code defines a Cube class that inherits from Rectangle, allowing the creation 
+and manipulation of 3D cube objects. It includes methods for calculating properties,
+ checking point positions, and visualizing the cubes. Test cases are provided for
+   demonstration."""
+
+class Cube(Rectangle): # Initialize a cube with given side length and 3D position.
     def __init__(self, side_length, x, y, z):
         super().__init__(side_length, side_length, x, y)
         self.z = z
