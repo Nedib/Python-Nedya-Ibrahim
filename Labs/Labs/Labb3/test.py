@@ -1,80 +1,144 @@
 import unittest
-from circle import Circle
+from Circle import Circle
 from rectangle import Rectangle
 from sphere import Sphere
 from cube import Cube
 
-class TestGeometry(unittest.TestCase):
+class Circle(unittest.TestCase):
     def setUp(self):
-        # Create instances of different geometric shapes for testing
-        self.circle = Circle(5, 1, 3)
-        self.sphere = Sphere(3, 2, 4, 2)
-        self.rectangle = Rectangle(4, 6, 3, 4)
-        self.cube = Cube(2, 4, 3, 2)
+        self.radius, self.x, self.y = 5, 1, 3
 
-    def test_circle_area(self):
-        """Test the area calculation for a Circle."""
-        self.assertAlmostEqual(self.circle.area(), 78.53981633974483)
+    def create_circle(self):
+        return Circle(self.radius, self.x, self.y)
 
-    def test_sphere_area(self):
-        """Test the surface area calculation for a Sphere."""
-        self.assertAlmostEqual(self.sphere.area(), 113.09733552923256)
+    def test_create_circle(self):
+        c1 = self.create_circle()
+        c2 = Circle(5, 1, 3)
+        self.assertEqual(c1, c2)
 
-    def test_sphere_volume(self):
-        """Test the volume calculation for a Sphere."""
-        self.assertAlmostEqual(self.sphere.volume(), 113.09733552923256)
+    def test_create_empty_circle(self):
+        with self.assertRaises(TypeError):
+            c = Circle()
 
-    def test_rectangle_area(self):
-        """Test the area calculation for a Rectangle."""
-        self.assertEqual(self.rectangle.area(), 24.0)
+    def test_create_invalid_circle(self):
+        with self.assertRaises(TypeError):
+            c = Circle(5, 1, "a")
+
+    def test_two_circle_not_equal(self):
+        c1 = self.create_circle()
+        c2 = Circle(1, 2, 7)
+        self.assertNotEqual(c1, c2)
+
+    def test_circle_minus_radius(self):
+        with self.assertRaises(ValueError):
+            c = Circle(-1, 2, 7)
+
+    def test_area(self):
+        c1 = self.create_circle()
+        self.assertAlmostEqual(c1.area(), 78.53981633974483)
+
+class Sphere(unittest.TestCase):
+    def setUp(self):
+        self.radius, self.x, self.y, self.z = 3, 2, 4, 2
+
+    def create_sphere(self):
+        return Sphere(self.radius, self.x, self.y, self.z)
+
+    def test_create_sphere(self):
+        s1 = self.create_sphere()
+        s2 = Sphere(3, 2, 4, 2)
+        self.assertEqual(s1, s2)
+
+    def test_create_empty_sphere(self):
+        with self.assertRaises(TypeError):
+            s = Sphere()
+
+    def test_create_invalid_sphere(self):
+        with self.assertRaises(TypeError):
+            s = Sphere(5, 1, 2, "a")
+
+    def test_two_sphere_not_equal(self):
+        s1 = self.create_sphere()
+        s2 = Sphere(4, 2, 5, 4)
+        self.assertNotEqual(s1, s2)
+
+    def test_sphere_minus_radius(self):
+        with self.assertRaises(ValueError):
+            s = Sphere(-1, 2, 3, 4)
+
+    def test_area(self):
+        s1 = self.create_sphere()
+        self.assertAlmostEqual(s1.area(), 113.09733552923256)
+
+class Rectangle(unittest.TestCase):
+    def setUp(self):
+        self.side1, self.side2, self.x, self.y = 4, 3, 4, 6
+
+    def create_rectangle(self):
+        return Rectangle(self.side1, self.side2, self.x, self.y)
+
+    def test_create_rectangle(self):
+        r1 = self.create_rectangle()
+        r2 = Rectangle(4, 3, 4, 6)
+        self.assertEqual(r1, r2)
+
+    def test_create_empty_rectangle(self):
+        with self.assertRaises(TypeError):
+            r = Rectangle()
+
+    def test_create_invalid_rectangle(self):
+        with self.assertRaises(TypeError):
+            r = Rectangle(5, 4, 1, "a")
+
+    def test_two_rectangle_not_equal(self):
+        r1 = self.create_rectangle()
+        r2 = Rectangle(10, 2, 3, -7)
+        self.assertNotEqual(r1, r2)
+
+    def test_rectangle_minus_length(self):
+        with self.assertRaises(ValueError):
+            r = Rectangle(-1, 3, 2, 7)
+
+    def test_area(self):
+        r1 = self.create_rectangle()
+        self.assertAlmostEqual(r1.area(), 12.0)
+
+class Cube(unittest.TestCase):
+    def setUp(self):
+        self.side, self.x, self.y, self.z = 4, 3, 4, 2
+
+    def create_cube(self):
+        return Cube(self.side, self.x, self.y, self.z)
+
+    def test_create_cube(self):
+        c1 = self.create_cube()
+        c2 = Cube(4, 3, 4, 2)
+        self.assertEqual(c1, c2)
+
+    def test_create_empty_cube(self):
+        with self.assertRaises(TypeError):
+            c = Cube()
+
+    def test_create_invalid_cube(self):
+        with self.assertRaises(TypeError):
+            c = Cube(5, 4, 1, "a")
+
+    def test_two_cube_not_equal(self):
+        c1 = self.create_cube()
+        c2 = Cube(2, 2, 3, -7)
+        self.assertNotEqual(c1, c2)
+
+    def test_cube_minus_length(self):
+        with self.assertRaises(ValueError):
+            c = Cube(-1, 3, 2, 7)
 
     def test_cube_volume(self):
-        """Test the volume calculation for a Cube."""
-        self.assertAlmostEqual(self.cube.volume(), 8.0)
+        c1 = self.create_cube()
+        self.assertAlmostEqual(c1.volume(), 64)
 
     def test_cube_circumradius(self):
-        """Test the circumradius calculation for a Cube."""
-        self.assertAlmostEqual(self.cube.circumradius(), 1.7320508075688772)
+        c1 = self.create_cube()
+        self.assertAlmostEqual(c1.circumradius(), 3.4641016151377546)
 
-    def test_circle_equality(self):
-        """Test equality of two Circle instances."""
-        other_circle = Circle(5, 1, 3)
-        self.assertEqual(self.circle, other_circle)
-
-    def test_sphere_equality(self):
-        """Test equality of two Sphere instances."""
-        other_sphere = Sphere(3, 2, 4, 2)
-        self.assertEqual(self.sphere, other_sphere)
-
-    def test_rectangle_equality(self):
-        """Test equality of two Rectangle instances."""
-        other_rectangle = Rectangle(4, 6, 3, 4)
-        self.assertEqual(self.rectangle, other_rectangle)
-
-    def test_cube_equality(self):
-        """Test equality of two Cube instances."""
-        other_cube = Cube(2, 4, 3, 2)
-        self.assertEqual(self.cube, other_cube)
-
-    def test_circle_inequality(self):
-        """Test inequality of two Circle instances."""
-        other_circle = Circle(1, 2, 7)
-        self.assertNotEqual(self.circle, other_circle)
-
-    def test_sphere_inequality(self):
-        """Test inequality of two Sphere instances."""
-        other_sphere = Sphere(4, 2, 5, 4)
-        self.assertNotEqual(self.sphere, other_sphere)
-
-    def test_rectangle_inequality(self):
-        """Test inequality of two Rectangle instances."""
-        other_rectangle = Rectangle(10, 2, 3, -7)
-        self.assertNotEqual(self.rectangle, other_rectangle)
-
-    def test_cube_inequality(self):
-        """Test inequality of two Cube instances."""
-        other_cube = Cube(2, 2, 3, -7)
-        self.assertNotEqual(self.cube, other_cube)
-
-if __name__ == "__main__":
+if __name__ == "__main":
     unittest.main()

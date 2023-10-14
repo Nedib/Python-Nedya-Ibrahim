@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-from circle import Circle  # Ensure the correct import path for the Circle class
+from Circle import Circle  # Ensure the correct import path for the Circle class
 from randompoint import random_point  # Make sure to import random_point from the correct location
 
 class Sphere(Circle):
