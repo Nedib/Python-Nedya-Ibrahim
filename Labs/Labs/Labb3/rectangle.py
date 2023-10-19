@@ -1,116 +1,116 @@
 import math
-import randompoint as random  # Make sure you import randompoint from the correct location
+from randompoint import random_point
+from Geometry import Geometry  
 import matplotlib.pyplot as plt
 
 # Generate random coordinates
-point_x, point_y, point_z = random.random_point()  # Override with your own coordinates
+point_x, point_y, point_z = random_point()  # Override with your own coordinates
 
-class Rectangle:
+class Rectangle(Geometry):
     """
-    A class for creating rectangular shapes with specified width and height. The 'x' and 'y' attributes represent the
-    coordinates of the top-left corner of the rectangle. This class provides methods to calculate the area, circumference,
-    and center point of the rectangle. It also allows for repositioning the rectangle and checking if a given point lies
-    within its boundaries. Static methods 'validate_length' and 'validate_real_numbers' ensure input validity. The class
-    supports comparison based on the equality of dimensions (width and height) and includes a method to plot the rectangle
-    and a random point on a 2D graph.
+    Represents a rectangle in 2D space.
+
+    Attributes:
+    width (float): Width of the rectangle.
+    height (float): Height of the rectangle.
+    x (float): X-coordinate of the rectangle's position.
+    y (float): Y-coordinate of the rectangle's position.
     """
+
     def __init__(self, width, height, x, y):
         """
-        Create a 2D rectangular shape with specified width and height, positioned at the top-left corner (x, y).
+        Initialize a Rectangle instance.
+
         Args:
-            width (float): The width of the rectangle.
-            height (float): The height of the rectangle.
-            x (float): The x-coordinate of the top-left corner of the rectangle.
-            y (float): The y-coordinate of the top-left corner of the rectangle.
+        width (float): Width of the rectangle.
+        height (float): Height of the rectangle.
+        x (float): X-coordinate of the rectangle's position.
+        y (float): Y-coordinate of the rectangle's position.
         """
+        super().__init__(x, y)
         self.width = width
         self.height = height
-        self.x = x
-        self.y = y
         Rectangle.validate_length(width, height)
-        Rectangle.validate_real_numbers(width, height, x, y)
+        Rectangle.validate_real_numbers(width, height)
 
+    @property
     def area(self):
         """
-        Calculate and return the area of the rectangle.
+        Calculate the area of the rectangle.
+
         Returns:
-            float: The area of the rectangle.
+        float: The area of the rectangle.
         """
         return self.width * self.height
 
+    @property
     def circumference(self):
         """
-        Calculate and return the circumference of the rectangle.
+        Calculate the circumference of the rectangle.
+
         Returns:
-            float: The circumference of the rectangle.
+        float: The circumference of the rectangle.
         """
         return 2 * (self.width + self.height)
 
     def center_point(self):
         """
-        Return the coordinates of the center point of the rectangle.
+        Calculate the center point of the rectangle.
+
         Returns:
-            Tuple[float, float]: The coordinates of the center point (x, y).
+        tuple: A tuple containing the (x, y) coordinates of the rectangle's center point.
         """
-        return self.x + self.width / 2, self.y + self.height / 2
+        return (self.x, self.y)
 
     def move_geometry(self, new_x, new_y):
         """
-        Reposition the rectangle to new coordinates.
+        Move the rectangle to new coordinates.
+
         Args:
-            new_x (float): The new x-coordinate of the top-left corner of the rectangle.
-            new_y (float): The new y-coordinate of the top-left corner of the rectangle.
+        new_x (float): New X-coordinate.
+        new_y (float): New Y-coordinate.
         """
         self.x = new_x
         self.y = new_y
 
-    def check_position(self, point_x, point_y):
+    def is_inside(self, x, y):
         """
         Check if a given point is inside the rectangle.
+
         Args:
-            point_x (float): The x-coordinate of the point.
-            point_y (float): The y-coordinate of the point.
+        x (float): X-coordinate of the point.
+        y (float): Y-coordinate of the point.
+
         Returns:
-            bool: True if the point is inside the rectangle, False otherwise.
+        bool: True if the point is inside the rectangle, False otherwise.
         """
-        x1, x2 = self.x, self.x + self.width
-        y1, y2 = self.y, self.y + self.height
-        return x1 <= point_x <= x2 and y1 <= point_y <= y2
+        return self.x <= x <= self.x + self.width and self.y <= y <= self.y + self.height
 
     @staticmethod
     def validate_length(*values):
         """
-        Validate the length values to ensure they are positive.
+        Validate that given values are greater than 0.
+
         Args:
-            *values: Variable-length arguments for values to validate.
+        *values: Variable-length list of values to validate.
+
         Raises:
-            ValueError: If any of the values is non-positive.
+        ValueError: If any value is less than or equal to 0.
         """
         for val in values:
             if val <= 0:
                 raise ValueError(f"Length must be > 0, not {val}")
-        Rectangle.validate_real_numbers(*values)
-
-    @staticmethod
-    def validate_real_numbers(*values):
-        """
-        Validate that the values are real numbers (int or float).
-        Args:
-            *values: Variable-length arguments for values to validate.
-        Raises:
-            TypeError: If any of the values is not an int or float.
-        """
-        for val in values:
-            if not isinstance(val, (int, float)):
-                raise TypeError(f"Values must be int or float, not {type(val)}")
+            Rectangle.validate_real_numbers(val)
 
     def __eq__(self, other):
         """
-        Check if another object is an equivalent rectangle, considering both width and height.
+        Compare if this rectangle is equal to another rectangle based on dimensions.
+
         Args:
-            other (object): The object to compare with.
+        other (Rectangle): Another Rectangle object to compare.
+
         Returns:
-            bool: True if the other object is an equivalent rectangle, False otherwise.
+        bool: True if the rectangles have equal dimensions, considering width and height.
         """
         if isinstance(other, Rectangle):
             return (self.width == other.width and self.height == other.height) or \
@@ -119,14 +119,17 @@ class Rectangle:
     def __repr__(self):
         """
         Return a string representation of the rectangle.
+
         Returns:
-            str: String representation of the rectangle.
+        str: A string representation of the rectangle's attributes.
         """
         return f"Rectangle(width={self.width}, height={self.height}, x={self.x}, y={self.y})"
 
     def draw_geometry(self):
         """
-        Draw the rectangle and a point on a 2D graph using Matplotlib.
+        Draw the rectangle.
+
+        Visualizes the rectangle using Matplotlib and adds it to the current plot.
         """
         drawing_rectangle = plt.Rectangle((self.x, self.y), self.width, self.height, color="red", fill=False, linewidth=2)
         ax = plt.gca()
@@ -135,17 +138,18 @@ class Rectangle:
         ax.plot(point_x, point_y, "ko")
         ax.set_aspect("equal", "box")
         plt.show()
-
-# Example usage
+"""
+# tests manual
 rectangle_1 = Rectangle(5, 10, 0, 0)
 rectangle_2 = Rectangle(3, 3, 0, 0)
 rectangle_3 = Rectangle(1, 4, 0, 0)
 print(rectangle_1)
-print(rectangle_1.area())
-print(rectangle_1.circumference())
+print(rectangle_1.area)
+print(rectangle_1.circumference)
 print(rectangle_1.center_point())
-print(rectangle_1.check_position(point_x, point_y))
+print(rectangle_1.is_inside(point_x, point_y))
 print(f"rectangle_1 == rectangle_2: {rectangle_1 == rectangle_2}")
 rectangle_1.move_geometry(-5, -5)
 print(rectangle_1.center_point())
 rectangle_1.draw_geometry()
+"""

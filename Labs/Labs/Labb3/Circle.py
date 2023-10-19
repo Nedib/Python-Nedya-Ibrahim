@@ -1,25 +1,19 @@
 import math
-import randompoint as random  # Make sure you import randompoint from the correct location
+import randompoint  
 import matplotlib.pyplot as plt
+from Geometry import Geometry  
 
 # Generate random coordinates
-point_x, point_y, point_z = random.random_point()  # Override with your own coordinates
+point_x, point_y, point_z = randompoint.random_point()
 
 class Circle:
-    """
-    A class for creating geometric circles with specified radius. The 'x' and 'y' attributes represent the coordinates
-    of the circle's center. This class provides methods to calculate the area and circumference of the circle, determine
-    the center point, move the circle to new coordinates, and check if a given point lies within its boundaries. Static
-    methods 'validate_length' and 'validate_real_numbers' ensure input validity. The class supports comparison based on
-    the equality of radii and includes a method to plot the circle and a random point on a 2D graph.
-    """
     def __init__(self, radius, x, y):
         """
-        Create a 2D circle object with a specified radius and center coordinates.
-        Args:
-            radius (float): The radius of the circle.
-            x (float): The x-coordinate of the circle's center.
-            y (float): The y-coordinate of the circle's center.
+        Initialize a Circle with a given radius and center coordinates (x, y).
+
+        :param radius: The radius of the circle (must be a positive number).
+        :param x: The x-coordinate of the center.
+        :param y: The y-coordinate of the center.
         """
         self.radius = radius
         self.x = x
@@ -27,48 +21,43 @@ class Circle:
         Circle.validate_length(radius)
         Circle.validate_real_numbers(radius, x, y)
 
+    @property
     def area(self):
         """
         Calculate and return the area of the circle.
-        Returns:
-            float: The area of the circle.
         """
         return math.pi * self.radius ** 2
 
+    @property
     def circumference(self):
         """
         Calculate and return the circumference of the circle.
-        Returns:
-            float: The circumference of the circle.
         """
         return 2 * math.pi * self.radius
 
     def center_point(self):
         """
-        Return the coordinates of the circle's center.
-        Returns:
-            Tuple[float, float]: The coordinates of the center (x, y).
+        Get the center point of the circle as a tuple (x, y).
         """
         return self.x, self.y
 
     def move_geometry(self, new_x, new_y):
         """
-        Move the circle to new coordinates.
-        Args:
-            new_x (float): The new x-coordinate of the circle's center.
-            new_y (float): The new y-coordinate of the circle's center.
+        Move the circle to a new center point with coordinates (new_x, new_y).
+
+        :param new_x: The new x-coordinate.
+        :param new_y: The new y-coordinate.
         """
         self.x = new_x
         self.y = new_y
 
     def check_position(self, point_x, point_y):
         """
-        Check if a given point is inside the circle.
-        Args:
-            point_x (float): The x-coordinate of the point.
-            point_y (float): The y-coordinate of the point.
-        Returns:
-            bool: True if the point is inside the circle, False otherwise.
+        Check if a point with coordinates (point_x, point_y) is within the circle.
+
+        :param point_x: The x-coordinate of the point.
+        :param point_y: The y-coordinate of the point.
+        :return: True if the point is within the circle, otherwise False.
         """
         d2 = (point_x - self.x) ** 2 + (point_y - self.y) ** 2
         return d2 <= self.radius ** 2
@@ -76,11 +65,10 @@ class Circle:
     @staticmethod
     def validate_length(value):
         """
-        Validate the length (radius) of the circle.
-        Args:
-            value (float): The value to validate.
-        Raises:
-            ValueError: If the length is non-positive.
+        Validate that a value is a positive number (length or radius).
+
+        :param value: The value to validate.
+        :raises ValueError: If the value is not positive.
         """
         if value <= 0:
             raise ValueError(f"Length must be > 0, not {value}")
@@ -89,11 +77,10 @@ class Circle:
     @staticmethod
     def validate_real_numbers(*values):
         """
-        Validate if the values are real numbers (int or float).
-        Args:
-            *values: Variable-length arguments to validate.
-        Raises:
-            TypeError: If any value is not an int or a float.
+        Validate that a list of values are either integers or floats.
+
+        :param values: The values to validate.
+        :raises TypeError: If any of the values is not an int or float.
         """
         for val in values:
             if not isinstance(val, (int, float)):
@@ -101,27 +88,75 @@ class Circle:
 
     def __eq__(self, other):
         """
-        Check if another object is a circle with the same radius.
-        Args:
-            other (object): The object to compare with.
-        Returns:
-            bool: True if the other object is a matching circle, False otherwise.
+        Compare the radius of this circle with another circle.
+
+        :param other: The other Circle object to compare with.
+        :return: True if the radii are equal, otherwise False.
         """
         if isinstance(other, Circle):
             return self.radius == other.radius
 
+    def __lt__(self, other):
+        """
+        Compare the radius of this circle with another circle (less than).
+
+        :param other: The other Circle object to compare with.
+        :return: True if this circle's radius is less than the other circle's radius.
+        """
+        if isinstance(other, Circle):
+            return self.radius < other.radius
+
+    def __le__(self, other):
+        """
+        Compare the radius of this circle with another circle (less than or equal).
+
+        :param other: The other Circle object to compare with.
+        :return: True if this circle's radius is less than or equal to the other circle's radius.
+        """
+        if isinstance(other, Circle):
+            return self.radius <= other.radius
+
+    def __gt(self, other):
+        """
+        Compare the radius of this circle with another circle (greater than).
+
+        :param other: The other Circle object to compare with.
+        :return: True if this circle's radius is greater than the other circle's radius.
+        """
+        if isinstance(other, Circle):
+            return self.radius > other.radius
+
+    def __ge(self, other):
+        """
+        Compare the radius of this circle with another circle (greater than or equal).
+
+        :param other: The other Circle object to compare with.
+        :return: True if this circle's radius is greater than or equal to the other circle's radius.
+        """
+        if isinstance(other, Circle):
+            return self.radius >= other.radius
+
     def __repr__(self):
         """
-        Return a string representation of the circle.
-        Returns:
-            str: String representation of the circle.
+        Get a string representation of the Circle object.
         """
         return f"Circle(radius={self.radius}, x={self.x}, y={self.y})"
 
+    def __str__(self):
+        """
+        Get a user-friendly string representation of the Circle object.
+        """
+        return f"Circle with radius {self.radius} at ({self.x}, {self.y})"
+
+    def is_unit_circle(self):
+        """
+        Check if this circle is a unit circle (radius equal to 1).
+
+        :return: True if the circle is a unit circle, otherwise False.
+        """
+        return self.radius == 1
+    
     def draw_geometry(self):
-        """
-        Draw the circle and a point on a 2D graph using Matplotlib.
-        """
         drawing_circle = plt.Circle((self.x, self.y), self.radius, color="blue", fill=False, linewidth=3)
         ax = plt.gca()
         ax.set(xlim=(-15, 15), ylim=(-15, 15))
@@ -130,12 +165,15 @@ class Circle:
         ax.set_aspect("equal", "box")
         plt.show()
 
-# Example usage
+# objects
 circle_1 = Circle(5, 0, 0)
 circle_2 = Circle(6, 0, 0)
+
+"""
+# tests manual
 print(circle_1)
-print(circle_1.area())
-print(circle_1.circumference())
+print(f"Area: {circle_1.area}")
+print(f"Circumference: {circle_1.circumference}")
 print(circle_1.center_point())
 print(circle_1.check_position(point_x, point_y))
 print(f"circle_1 == circle_2: {circle_1 == circle_2}")
@@ -143,3 +181,4 @@ circle_1.move_geometry(5, 5)
 print(circle_1.center_point())
 circle_1.draw_geometry()
 print(circle_1.check_position(point_x, point_y))
+"""

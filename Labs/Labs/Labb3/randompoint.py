@@ -9,3 +9,4 @@ def random_point():
     point_z = random.randint(-10, 10)
     
     return point_x, point_y, point_z
+

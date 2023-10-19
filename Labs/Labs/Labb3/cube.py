@@ -1,87 +1,91 @@
+from rectangle import Rectangle
+from randompoint import random_point
 import matplotlib.pyplot as plt
 import numpy as np
-import math
-from rectangle import Rectangle  
 
 def random_point():
     """
-    Simulate random 3D point coordinates within a specified range.
+    Generate random 3D coordinates.
+
     Returns:
-        Tuple[float, float, float]: Random point coordinates (x, y, z).
+    tuple: A tuple containing three random coordinates (x, y, z).
     """
     return 8 * np.random.rand(), 8 * np.random.rand(), 8 * np.random.rand()
 
-# Random point coordinates
+# Generate random coordinates
 point_x, point_y, point_z = random_point()
 
 class Cube(Rectangle):
+    """
+    Represents a 3D cube, a subclass of Rectangle.
+    """
+
     def __init__(self, width, height, x, y, z):
         """
-        Create a 3D cube object.
+        Initialize a Cube instance.
+
         Args:
-            width (float): The width of the cube.
-            height (float): The height of the cube.
-            x (float): The x-coordinate of the cube.
-            y (float): The y-coordinate of the cube.
-            z (float): The z-coordinate of the cube.
+        width (float): Width of the cube.
+        height (float): Height of the cube.
+        x (float): X-coordinate of the cube's position.
+        y (float): Y-coordinate of the cube's position.
+        z (float): Z-coordinate of the cube's position.
         """
-        super().__init__(width, height, x, y)  # Call the constructor of the Rectangle class
+        super().__init__(width, height, x, y)
         self.z = z
 
-    def cube_area(self):
+    def area(self):
         """
-        Calculate and return the surface area of the cube.
+        Calculate the surface area of the cube.
+
         Returns:
-            float: The surface area of the cube.
+        float: The surface area of the cube.
         """
         return 6 * self.width * self.height
 
-    def circumradius(self):
+    def circumference(self):
         """
-        Calculate and return the circumradius of the cube.
+        Calculate the total edge length of the cube.
+
         Returns:
-            float: The circumradius of the cube.
+        float: The total edge length of the cube.
         """
-        return self.width * math.sqrt(3) / 2
+        return 4 * (self.width + self.height + self.height)
 
     def center_point(self):
         """
-        Calculate and return the coordinates of the cube's center point in 3D.
+        Calculate the center point (centroid) of the cube.
+
         Returns:
-            Tuple[float, float, float]: Coordinates of the center point (x, y, z).
+        tuple: A tuple containing the (x, y, z) coordinates of the cube's center point.
         """
         cube_center_x = self.x + (self.width / 2)
         cube_center_y = self.y + (self.height / 2)
         cube_center_z = self.z + (self.height / 2)
         return cube_center_x, cube_center_y, cube_center_z
 
-    def volume(self):
+    def move_geometry(self, new_x, new_y):
         """
-        Calculate and return the volume of the cube.
-        Returns:
-            float: The volume of the cube.
-        """
-        return self.width * self.height * self.height
+        Move the cube's position to new coordinates.
 
-    def move_3d_geometry(self, move_x, move_y, move_z):
-        """
-        Move the cube to a new 3D position specified by the given coordinates.
         Args:
-            move_x (float): The new x-coordinate of the cube.
-            move_y (float): The new y-coordinate of the cube.
-            move_z (float): The new z-coordinate of the cube.
+        new_x (float): New X-coordinate.
+        new_y (float): New Y-coordinate.
         """
-        self.x, self.y, self.z = move_x, move_y, move_z
+        self.x = new_x
+        self.y = new_y
 
     def check_position(self, point_x, point_y, point_z):
         """
-        Check if a given 3D point with coordinates (point_x, point_y, point_z) is inside the cube.
+        Check if a given point is within the cube.
+
         Args:
-            point_x (float): x-coordinate of the point to check.
-            point_y (float): y-coordinate of the point to check.
-            point_z (float): z-coordinate of the point to check.
+        point_x (float): X-coordinate of the point.
+        point_y (float): Y-coordinate of the point.
+        point_z (float): Z-coordinate of the point.
+
         Returns:
-            bool: True if the point is inside the cube, False otherwise.
+        bool: True if the point is inside the cube, False otherwise.
         """
         x1, x2 = self.x, self.x + self.width
         y1, y2 = self.y, self.y + self.height
@@ -90,25 +94,30 @@ class Cube(Rectangle):
 
     def __eq__(self, other):
         """
-        Check if another object is a cube and has the same width and height.
+        Compare if this cube is equal to another cube.
+
         Args:
-            other (object): The object to compare with.
+        other (Cube): Another Cube object to compare.
+
         Returns:
-            bool: True if the other object is a matching cube, False otherwise.
+        bool: True if the cubes are equal, False otherwise.
         """
         return isinstance(other, Cube) and (self.width == other.width and self.height == other.height)
 
     def __repr__(self):
         """
         Return a string representation of the cube.
+
         Returns:
-            str: String representation of the cube.
+        str: A string representation of the cube's attributes.
         """
         return f"Cube (width={self.width}, height={self.height}, x={self.x}, y={self.y}, z={self.z})"
 
-    def draw_3d_geometry(self):
+    def draw_geometry(self):
         """
-        Draw a 3D representation of the cube using Matplotlib.
+        Draw the cube's geometry using 3D plotting.
+
+        This method uses Matplotlib to create a 3D plot of the cube and a point in space.
         """
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
@@ -129,9 +138,10 @@ class Cube(Rectangle):
     @staticmethod
     def get_cube():
         """
-        Generate cube coordinates for 3D visualization.
+        Generate cube coordinates for 3D plotting.
+
         Returns:
-            Tuple[np.array, np.array, np.array]: Cube coordinates (x, y, z).
+        tuple: Three arrays (x, y, z) for cube coordinates in 3D space.
         """
         phi = np.arange(1, 10, 2) * np.pi / 4
         phi2, theta = np.meshgrid(phi, phi)
@@ -140,21 +150,20 @@ class Cube(Rectangle):
         z_cube = np.cos(theta) / np.sqrt(2)
         return x_cube, y_cube, z_cube
 
-# Random point coordinates
-point_x, point_y, point_z = random_point()
-
-# Create cube objects
+# objects
 cube_1 = Cube(5, 5, 0, 0, 0)
 cube_2 = Cube(4, 4, 1, 1, 1)
 
-# Test and print results
+"""
+## tests manual
 print(cube_1)
-print(f"Area: {cube_1.cube_area()}")
-print(f"Circumradius: {cube_1.circumradius()}")
+print(f"Area: {cube_1.area()}")
+print(f"circumference: {cube_1.circumference()}")
 print(f"Center Point: {cube_1.center_point()}")
 print(f"Point Inside Cube: {cube_1.check_position(point_x, point_y, point_z)}")
 print(f"cube_1 == cube_2: {cube_1 == cube_2}")
-cube_1.move_3d_geometry(6, 6, 6)
+cube_1.move_geometry(6, 6)
 print(cube_1)
 print(f"Point Inside Cube (after move): {cube_1.check_position(point_x, point_y, point_z)}")
-cube_1.draw_3d_geometry()
+cube_1.draw_geometry()
+"""
